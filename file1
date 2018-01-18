@@ -1,0 +1,52 @@
+% This program implement an FIR filter for later implmentation in C
+
+
+% First FIR in MATLAB version for matching results
+x = [-1 3 0 1 -2];
+h = [1 0 -1 -2];
+c = conv (x,h);
+disp(x); disp(h); disp(c);
+
+
+%My version - from input's perspective
+N=length(h);
+M=length(x);
+y_tmp = zeros(M,N-1+M);
+y = zeros(1,N-1+M);
+
+for k=1:M
+    for l=1:N
+        y_tmp(k,k+l-1) = x(k)*h(l);
+    end
+end
+y = sum(y_tmp);
+disp(y);
+
+%Another version of above - from output's perspective
+%Just a bit more compact
+N=length(h);
+M=length(x);
+z = zeros(1,N-1+M);
+
+for i=1:M
+    for j=1:N
+        z(i+j-1) =  z(i+j-1) + x(i)*h(j);
+        % -1 as MATLAB start with 1 and 1+1 gets 2
+    end
+end
+disp(z);
+
+%Output side implemention 
+N=length(h);
+M=length(x);
+YO = zeros(1,N-1+M);
+
+for n=1:M+N-1 %traverse whole output sequence
+    for k=1:N
+        g=n-k+1;
+        if(g>0 && g<=M) 
+            YO(n) =  YO(n) + x((n-k)+1)*h(k); %+1 as MATLAB doesn't support index 0
+        end
+    end
+end
+disp(YO);
