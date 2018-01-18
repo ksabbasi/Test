@@ -1,0 +1,7 @@
+
+clear all; clc; close all;
+
+%This sampling freq. has nothing to do with actual calcuation,
+% its just used as a indexing purposes
+Sampling_freq = 1e3;
+SI = 1/Sampling_freq; % Sampling Interval
